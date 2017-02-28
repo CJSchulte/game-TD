@@ -1,0 +1,107 @@
+// just the basics so far
+// only one turret/monster per spot 
+// creating prefabs for shit 
+public GameObject monsterPrefab;
+private GameObject monster; // will be changed but just using basic for the moment 
+
+
+private bool canPlaceMonster() {
+  return monster == null;
+}
+
+// allows a player to place a turrer/monster when mouse clicks game object
+
+void OnMouseUp () {
+  
+  if (canPlaceMonster ()) {
+    
+    monster = (GameObject) 
+      Instantiate(monsterPrefab, transform.position, Quaternion.identity);
+   
+    AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+    audioSource.PlayOneShot(audioSource.clip);
+ 
+    // TODO: Deduct gold (will do later)
+  }
+}
+
+// basic lvl up/upgrade system 
+
+[System.Serializable]
+public class MonsterLevel {
+  public int cost;
+  public GameObject visualization;
+}
+
+// define monster/turret lvl
+using System.Collections.Generic 
+
+//creating a list which adds to monster/turret lvl
+
+public List<Monsterlevels> levels;
+
+//define current lvl
+
+public MonsterLevel CurrentLevel {
+  get {
+    return currentLevel;
+  }
+  set {
+    currentLevel = value;
+    int currentLevelIndex = levels.IndexOf(currentLevel);
+ 
+    GameObject levelVisualization = levels[currentLevelIndex].visualization;
+    for (int i = 0; i < levels.Count; i++) {
+      if (levelVisualization != null) {
+        if (i == currentLevelIndex) {
+          levels[i].visualization.SetActive(true);
+        } else {
+          levels[i].visualization.SetActive(false);
+        }
+      }
+    }
+  }
+}
+
+// add implementation of onEnable 
+void onEnable(){
+Currentlevel = list[0];
+}
+
+// add following leveling ability to monsterdata in MonoDevelope
+
+public MonsterLevel getNextLevel() {
+  int currentLevelIndex = levels.IndexOf (currentLevel);
+  int maxLevelIndex = levels.Count - 1;
+  if (currentLevelIndex < maxLevelIndex) {
+    return levels[currentLevelIndex+1];
+  } else {
+    return null;
+  }
+}
+//add this method to increase level
+
+public void increaseLevel() {
+  int currentLevelIndex = levels.IndexOf(currentLevel);
+  if (currentLevelIndex < levels.Count - 1) {
+    CurrentLevel = levels[currentLevelIndex + 1];
+  }
+}
+// save previous file and then switch to monodevelope PlaceMonster.cs - add this method to test so far
+private bool canUpgradeMonster() {
+  if (monster != null) {
+    MonsterData monsterData = monster.GetComponent<MonsterData> ();
+    MonsterLevel nextLevel = monsterData.getNextLevel();
+    if (nextLevel != null) {
+      return true;
+    }
+  }
+  return false;
+}
+//this is all for this file 
+TODO - add gold mechanic 
+
+
+
+
+
